@@ -41,6 +41,7 @@ Output of the model is the predicted steering angle.
 
 # Data collection
 Model was trained on two datasets: -
+
 1. Collected by driving in train mode in simulator (provided by Udacity)
 1. Data made available by Udacity, [link](https://d17h27t6h515a5.cloudfront.net/topher/2016/December/584f6edd_data/data.zip)
 

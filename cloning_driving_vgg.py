@@ -28,6 +28,7 @@ STEERING_ANGLE_INDX = 3
 
 
 def build_model():
+    """builds a VGG net like model to simulate driving behavior"""
     model = Sequential()
 
     model.add(Convolution2D(config.conv1['nb_filter'],
@@ -106,6 +107,7 @@ def build_model():
 
 
 def get_data_stats(fs_path):
+    """utility function to get stats on data which are helpful for debugging"""
     def _func(record):
         d = record.strip().split(',')
         return float(d[STEERING_ANGLE_INDX])
@@ -136,6 +138,7 @@ def get_data_stats(fs_path):
 
 
 def get_driving_data(fs_path):
+    """prepares input data for model from driving log"""
     f = open(fs_path, 'r')
     lines = f.read().strip().split('\n')
     f.close()
@@ -154,27 +157,33 @@ def get_driving_data(fs_path):
 
 
 def train_model(model, training_data, nb_epoch):
+    """trains model using training data for provided #epochs"""
     return model.fit(training_data['X'], training_data['y'],
                      batch_size=config.training_batch_size,
-                     nb_epoch=nb_epoch)
+                     nb_epoch=nb_epoch,
+                     validation_split=config.validation_split)
 
 
 def test_model(model, test_data):
+    """tests model"""
     return model.evaluate(test_data['X'], test_data['y'],
                           batch_size=config.test_batch_size)
 
 
 def predict(model, X):
+    """makes prediction of steering angle"""
     return model.predict(X, batch_size=config.prediction_batch_size)
 
 
 def save_model(model):
+    """saves model to file system"""
     with open('model.json', 'w') as model_json_file:
         json.dump(model.to_json(), model_json_file)
     model.save_weights('model.h5')
 
 
 def load_model():
+    """loads model from file system"""
     with open('model.json', 'r') as model_json_file:
         model = model_from_json(json.load(model_json_file))
         model.load_weights('model.h5')

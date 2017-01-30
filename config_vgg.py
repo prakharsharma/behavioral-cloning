@@ -73,3 +73,5 @@ prediction_batch_size = 64
 keep_prob = 0.2
 
 l2_regularization_scale = 1e-7
+
+validation_split = 0.10
